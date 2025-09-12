@@ -28,7 +28,7 @@ export const generateHeadshot = async (
     };
 
     const textPart = {
-      text: `Generate a professional headshot based on the provided image. Keep the person's face and features the same, but change the clothing and background according to the following style: ${prompt}`,
+      text: `Generate a professional headshot based on the provided image. Keep the person's face and features the same, but change the clothing and background according to the following style: ${prompt}. The final image must be a square with a 1:1 aspect ratio.`,
     };
 
     const response = await ai.models.generateContent({

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Header } from './components/Header';
 import { UploadZone } from './components/UploadZone';
 import { Gallery } from './components/Gallery';
@@ -13,6 +13,31 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string>('');
+
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const messages = [
+      'Analyzing photo structure...',
+      'Identifying key features...',
+      'Generating professional backgrounds...',
+      'Adjusting lighting and attire...',
+      'Rendering high-resolution portraits...',
+      'Finalizing your headshots...',
+    ];
+    let currentIndex = 0;
+    setLoadingMessage(messages[currentIndex]);
+
+    const intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % messages.length;
+      setLoadingMessage(messages[currentIndex]);
+    }, 2500);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isLoading]);
 
   const handleFileSelect = (file: File) => {
     setUploadedFile(file);
@@ -105,7 +130,7 @@ const App: React.FC = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <span>Processing... {progress}%</span>
+                    <span>{loadingMessage}</span>
                   </div>
                   <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 mt-2">
                     <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${progress}%`, transition: 'width 0.3s ease-in-out' }}></div>

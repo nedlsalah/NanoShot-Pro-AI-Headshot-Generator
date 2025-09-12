@@ -14,10 +14,11 @@ export const headshotPrompts: string[] = [
   'Cinematic style headshot with dramatic lighting. Wearing a dark turtleneck sweater against a moody, dark grey textured background.',
   'Business portrait in a modern, sunlit atrium. Wearing a tailored light grey suit. Expression is thoughtful and professional.',
   'Headshot with a solid, deep blue studio background. Wearing a cream-colored blouse. Lighting is soft and flattering, focused on the face.',
-  'Outdoor urban headshot, wearing a leather jacket over a simple t-shirt. Background is a slightly blurred city street with interesting architecture.',
   'Powerful and serious expression, wearing a sharp, dark suit. Background is a simple, dark, out-of-focus setting. Rembrandt lighting style.',
-  'Relaxed and friendly headshot for a creative professional. Wearing a casual sweater, set in a cozy, book-lined office or library.',
   'Black and white studio headshot, high contrast with dramatic shadows and a powerful, direct gaze. Simple dark grey studio background. 8K DSLR quality.',
   'Elegant black and white portrait with soft, natural lighting. Wearing a simple, classic outfit. The background is a light, textured studio canvas. The mood is thoughtful and serene.',
-  'Tech industry style headshot. Wearing a branded company polo shirt (use a generic logo). Background is a modern server room, softly blurred.'
+  'Tech industry style headshot. Wearing a branded company polo shirt (use a generic logo). Background is a modern server room, softly blurred.',
+  'Professional headshot, wearing a charcoal suit and tie, against a blurred backdrop of a high-rise office window with a city view. Confident expression, professional lighting.',
+  'Headshot for a startup founder, wearing a high-quality dark t-shirt under a blazer. Background is a bright, minimalist office space with natural light. Energetic and forward-looking expression.',
+  'Clean and modern studio headshot with a solid navy blue background. Wearing a light grey blazer. Professional and approachable look. High resolution.'
 ];
