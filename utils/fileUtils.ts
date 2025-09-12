@@ -1,4 +1,3 @@
-
 declare const JSZip: any;
 
 /**
@@ -56,13 +55,13 @@ export const fileToBase64 = (file: File): Promise<{ data: string; mimeType: stri
     reader.readAsDataURL(file);
     reader.onload = () => {
       if (typeof reader.result !== 'string') {
-        return reject(new Error('FileReader did not return a string.'));
+        return reject(new Error('Could not process the uploaded file. It might be corrupted.'));
       }
       const result = reader.result as string;
       const mimeType = result.split(';')[0].split(':')[1];
       const data = result.split(',')[1];
       resolve({ data, mimeType });
     };
-    reader.onerror = (error) => reject(error);
+    reader.onerror = () => reject(new Error('Failed to read the file. Please try uploading it again.'));
   });
 };

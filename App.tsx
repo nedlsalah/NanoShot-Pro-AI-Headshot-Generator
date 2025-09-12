@@ -26,6 +26,11 @@ const App: React.FC = () => {
       return;
     }
 
+    if (!navigator.onLine) {
+        setError("You appear to be offline. Please check your internet connection.");
+        return;
+    }
+
     setIsLoading(true);
     setError(null);
     setGeneratedImages([]);
@@ -34,30 +39,25 @@ const App: React.FC = () => {
     try {
       const { data: base64ImageData, mimeType } = await fileToBase64(uploadedFile);
       
-      let completedCount = 0;
       const totalPrompts = headshotPrompts.length;
+      const newImages: string[] = [];
 
-      const imagePromises = headshotPrompts.map(async (prompt) => {
-        try {
-          const base64Image = await generateHeadshot(prompt, base64ImageData, mimeType);
-          // Update state as each image is generated to show them immediately
-          setGeneratedImages(prevImages => [...prevImages, base64Image]);
-          return base64Image;
-        } catch (e) {
-          console.error(`Failed to generate headshot for prompt: "${prompt}"`, e);
-          return null; // Return null for failed requests to not break Promise.all
-        } finally {
-            // Update progress regardless of success or failure
-            completedCount++;
-            setProgress(Math.round((completedCount / totalPrompts) * 100));
-        }
-      });
-
-      await Promise.all(imagePromises);
+      for (let i = 0; i < totalPrompts; i++) {
+        const prompt = headshotPrompts[i];
+        const base64Image = await generateHeadshot(prompt, base64ImageData, mimeType);
+        newImages.push(base64Image);
+        // Update state with a new array to ensure re-render
+        setGeneratedImages([...newImages]);
+        setProgress(Math.round(((i + 1) / totalPrompts) * 100));
+      }
 
     } catch (err) {
       console.error(err);
-      setError("Failed to generate headshots. An unexpected error occurred.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred. Please refresh and try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +112,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
               )}
-              {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
             </div>
           </div>
           
