@@ -1,0 +1,5 @@
+{
+  "name": "NanoShot Pro: AI Headshot Generator",
+  "description": "An application to transform a user's photo into multiple professional headshots instantly using AI. Users can upload a photo, generate a gallery of headshots, and download them individually or all at once.",
+  "requestFramePermissions": []
+}

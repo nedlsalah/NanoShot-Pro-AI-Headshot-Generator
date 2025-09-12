@@ -1,0 +1,23 @@
+export const headshotPrompts: string[] = [
+  'Wearing a black formal blazer, natural professional posture, blurred modern office setting background. DSLR quality.',
+  'Wearing a dark navy blue suit jacket, out-of-focus architectural setting background, confident and approachable expression. High-resolution.',
+  'Professional headshot with a clean, solid light-grey background. Wearing a crisp white button-down shirt. Soft, even studio lighting.',
+  'Outdoor professional headshot, wearing a charcoal grey blazer, city park with soft foliage in the background. Natural morning light.',
+  'Corporate headshot against a textured, dark grey wall. Wearing a classic black dress shirt. Dramatic side lighting.',
+  'A friendly and warm headshot, wearing a casual but smart blue blouse. Background is a bright, modern co-working space.',
+  'High-key studio headshot, wearing a black blazer, pure white background, softly and evenly lit. 8K, DSLR quality.',
+  'Wearing a light blue shirt with an open collar, set against a blurred background of a modern glass building. Confident smile.',
+  'Studio portrait with a warm, golden light setup. Wearing a dark blazer. The background is a warm, out-of-focus interior.',
+  'A creative professional headshot, arms crossed, leaning slightly forward. Background is a minimalist, neutral-toned studio.',
+  'Professional studio headshot with a solid black background. Wearing a black formal blazer. Natural, professional posture suitable for LinkedIn. 8K, DSLR quality.',
+  'Candid-style professional shot, laughing naturally. Background is a bright office lounge. Soft, ambient light.',
+  'Cinematic style headshot with dramatic lighting. Wearing a dark turtleneck sweater against a moody, dark grey textured background.',
+  'Business portrait in a modern, sunlit atrium. Wearing a tailored light grey suit. Expression is thoughtful and professional.',
+  'Headshot with a solid, deep blue studio background. Wearing a cream-colored blouse. Lighting is soft and flattering, focused on the face.',
+  'Outdoor urban headshot, wearing a leather jacket over a simple t-shirt. Background is a slightly blurred city street with interesting architecture.',
+  'Powerful and serious expression, wearing a sharp, dark suit. Background is a simple, dark, out-of-focus setting. Rembrandt lighting style.',
+  'Relaxed and friendly headshot for a creative professional. Wearing a casual sweater, set in a cozy, book-lined office or library.',
+  'Black and white studio headshot, high contrast with dramatic shadows and a powerful, direct gaze. Simple dark grey studio background. 8K DSLR quality.',
+  'Elegant black and white portrait with soft, natural lighting. Wearing a simple, classic outfit. The background is a light, textured studio canvas. The mood is thoughtful and serene.',
+  'Tech industry style headshot. Wearing a branded company polo shirt (use a generic logo). Background is a modern server room, softly blurred.'
+];
