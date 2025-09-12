@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { downloadImage } from '../utils/fileUtils';
 import { DownloadIcon } from './icons';
@@ -6,15 +5,18 @@ import { DownloadIcon } from './icons';
 interface ImageCardProps {
   base64Image: string;
   fileName: string;
+  prompt: string;
 }
 
-export const ImageCard: React.FC<ImageCardProps> = ({ base64Image, fileName }) => {
+export const ImageCard: React.FC<ImageCardProps> = ({ base64Image, fileName, prompt }) => {
   const handleDownload = () => {
-    downloadImage(`data:image/png;base64,${base64Image}`, fileName);
+    if (window.confirm('Are you sure you want to download this headshot?')) {
+      downloadImage(`data:image/png;base64,${base64Image}`, fileName);
+    }
   };
 
   return (
-    <div className="group relative aspect-square overflow-hidden rounded-lg shadow-lg">
+    <div className="group relative aspect-square overflow-hidden rounded-lg shadow-lg" title={prompt}>
       <img
         src={`data:image/png;base64,${base64Image}`}
         alt={fileName}
