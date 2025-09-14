@@ -4,8 +4,9 @@ import { UploadZone } from './components/UploadZone';
 import { Gallery } from './components/Gallery';
 import { Footer } from './components/Footer';
 import { generateHeadshot } from './services/geminiService';
-import { headshotPrompts } from './constants';
+import { stylePresets, StylePreset } from './constants';
 import { fileToBase64 } from './utils/fileUtils';
+import { StyleSelector } from './components/StyleSelector';
 
 export interface GeneratedImage {
   prompt: string;
@@ -16,6 +17,7 @@ export interface GeneratedImage {
 
 const App: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [selectedPresetId, setSelectedPresetId] = useState<StylePreset['id'] | null>(null);
   const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -50,6 +52,7 @@ const App: React.FC = () => {
     setUploadedFile(file);
     setError(null);
     setGeneratedImages([]);
+    setSelectedPresetId(null);
   };
 
   const handleGenerateHeadshots = useCallback(async () => {
@@ -57,16 +60,26 @@ const App: React.FC = () => {
       setError("Please upload a photo first.");
       return;
     }
-
-    if (!navigator.onLine) {
+    if (!selectedPresetId) {
+      setError("Please select a style preset.");
+      return;
+    }
+     if (!navigator.onLine) {
         setError("You appear to be offline. Please check your internet connection.");
         return;
+    }
+
+    const selectedPreset = stylePresets.find(p => p.id === selectedPresetId);
+    if (!selectedPreset) {
+      setError("Invalid style preset selected.");
+      return;
     }
 
     setIsLoading(true);
     setError(null);
     setProgress(0);
     
+    const headshotPrompts = selectedPreset.prompts;
     const initialImages: GeneratedImage[] = headshotPrompts.map(prompt => ({
       prompt,
       image: null,
@@ -115,12 +128,11 @@ const App: React.FC = () => {
       } else {
         setError("An unexpected error occurred. Please refresh and try again.");
       }
-       // On critical error, revert to the upload screen to show the message
       setGeneratedImages([]);
     } finally {
       setIsLoading(false);
     }
-  }, [uploadedFile]);
+  }, [uploadedFile, selectedPresetId]);
 
   const handleStartOver = () => {
     setUploadedFile(null);
@@ -128,6 +140,7 @@ const App: React.FC = () => {
     setIsLoading(false);
     setProgress(0);
     setError(null);
+    setSelectedPresetId(null);
   };
 
   return (
@@ -153,30 +166,43 @@ const App: React.FC = () => {
                 />
              </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
               <div className="flex flex-col items-center">
+                 <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-200">Step 1: Upload Your Photo</h3>
                 <UploadZone onFileSelect={handleFileSelect} uploadedFile={uploadedFile} disabled={isLoading} />
-                <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">Accepted formats: JPG, PNG, WEBP. Max size: 5MB</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500 mt-3 text-center">
+                  For best results, use a clear, front-facing photo.
+                  <br />
+                  Accepted formats: JPG, PNG, WEBP. Max size: 5MB
+                </p>
               </div>
               
-              <div className="flex flex-col justify-center items-center h-full space-y-4 pt-4 md:pt-0">
-                <button
-                  onClick={handleGenerateHeadshots}
-                  disabled={!uploadedFile}
-                  className="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600 transition-all duration-300"
-                >
-                  Generate Headshots
-                </button>
+              <div className="flex flex-col justify-start h-full space-y-6 pt-4 md:pt-0">
+                 <StyleSelector 
+                    selectedPresetId={selectedPresetId}
+                    onSelectPreset={(id) => setSelectedPresetId(id)}
+                    disabled={!uploadedFile || isLoading}
+                  />
 
-                {uploadedFile && (
+                <div className="flex flex-col space-y-3">
                   <button
-                    onClick={handleStartOver}
-                    className="w-full bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                    onClick={handleGenerateHeadshots}
+                    disabled={!uploadedFile || !selectedPresetId || isLoading}
+                    className="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600 transition-all duration-300 flex items-center justify-center"
+                    aria-label="Generate headshots based on selected photo and style"
                   >
-                    Start Over
+                     {isLoading ? 'Generating...' : 'Generate Headshots'}
                   </button>
-                )}
-                {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
+                  {uploadedFile && (
+                    <button
+                      onClick={handleStartOver}
+                      className="w-full bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                    >
+                      Start Over
+                    </button>
+                  )}
+                </div>
+                 {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
               </div>
             </div>
           )}
