@@ -28,7 +28,7 @@ export const generateHeadshot = async (
     };
 
     const textPart = {
-      text: `Generate a professional headshot based on the provided image. Keep the person's face and features the same, but change the clothing and background according to the following style: ${prompt}. The person's expression must be confident with their mouth closed (no smiling or laughing). The final image must be a square with a 1:1 aspect ratio.`,
+      text: `Recreate the provided image as a new headshot. The person's facial features must remain identical to the original photo. The new headshot should strictly adhere to the following style, clothing, and background description: "${prompt}". Ensure the final image is a high-resolution, square (1:1 aspect ratio) portrait.`,
     };
 
     const response = await ai.models.generateContent({
@@ -53,6 +53,9 @@ export const generateHeadshot = async (
   } catch (error) {
     console.error("Error generating image with Gemini:", error);
     if (error instanceof Error) {
+        if (error.message.toLowerCase().includes('quota')) {
+            throw new Error("Daily generation limit reached. Please try again tomorrow.");
+        }
         if (error.message.toLowerCase().includes('safety')) {
             throw new Error("Generation failed due to safety filters. Please try a different photo or pose.");
         }
