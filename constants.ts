@@ -20,7 +20,7 @@ export const stylePresets: StylePreset[] = [
       'Hyper-realistic professional headshot, wearing a classic business suit. The background is a clean, modern office setting. The lighting is soft and even, creating a flattering, high-resolution portrait.',
       'Wearing a sharp grey pinstripe suit, against a minimalist office background with a single large plant. Soft but directional light.',
       'Headshot wearing a tailored navy blue blazer and a crisp white shirt, with a blurred background of a corporate lobby. Professional and approachable.',
-      'Wearing a dark charcoal suit, no tie, top button undone. Background is a solid, medium-grey studio backdrop. Clean, professional lighting.'
+      "Create a vertical portrait shot in 1080x1920 format using the exact same face features, characterized by stark cinematic lighting and intense contrast. Captured in a slightly low, upward-facing angle that dramatizes the subject's jawline and neck, the composition evokes quiet dominance and sculptural elegance. The background is a deep, saturated crimson red, creating a bold visual clash with the model's luminous skin and dark wardrobe, which consists of a black coat and a white shirt."
     ]
   },
   {
