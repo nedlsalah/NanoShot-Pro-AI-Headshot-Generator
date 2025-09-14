@@ -19,5 +19,7 @@ export const headshotPrompts: string[] = [
   'Professional headshot. Wearing a tailored tan blazer over a simple white shirt. The background is a softly lit, contemporary office with clean lines. Expression is composed and confident.',
   'Professional headshot, wearing a charcoal suit and tie, against a blurred backdrop of a high-rise office window with a city view. Confident expression, professional lighting.',
   'Headshot for a startup founder, wearing a high-quality dark t-shirt under a blazer. Background is a bright, minimalist office space with natural light. Energetic and forward-looking expression.',
-  'Clean and modern studio headshot with a solid navy blue background. Wearing a light grey blazer. Professional and confident look. High resolution.'
+  'Clean and modern studio headshot with a solid navy blue background. Wearing a light grey blazer. Professional and confident look. High resolution.',
+  'High-resolution corporate headshot, wearing a business professional outfit suitable for LinkedIn. The background is a light gradient off-white, with professional photo studio lighting.',
+  'Hyper-realistic professional headshot, wearing a classic business suit. The background is a clean, modern office setting. The lighting is soft and even, creating a flattering, high-resolution portrait.'
 ];
