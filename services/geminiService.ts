@@ -28,7 +28,7 @@ export const generateHeadshot = async (
     };
 
     const textPart = {
-      text: `Recreate the provided image as a new headshot. The person's facial features must remain identical to the original photo. The new headshot should strictly adhere to the following style, clothing, and background description: "${prompt}". The output image MUST be a square with a 1:1 aspect ratio. This is a critical requirement. Ensure the final image is a high-resolution portrait.`,
+      text: `Using the uploaded photo as a strict reference, generate a professional headshot. The person's face, facial features, and expression MUST be an exact 100% copy of the original photo. Do not add a smile or change the expression. The mouth must be shut. The final output MUST be a photorealistic copy of the person. Style requirements for clothing and background are: "${prompt}". CRITICAL: The output image must be a perfect square (1:1 aspect ratio) and high-resolution.`,
     };
 
     const response = await ai.models.generateContent({

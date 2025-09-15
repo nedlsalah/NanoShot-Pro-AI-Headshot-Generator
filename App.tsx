@@ -4,9 +4,8 @@ import { UploadZone } from './components/UploadZone';
 import { Gallery } from './components/Gallery';
 import { Footer } from './components/Footer';
 import { generateHeadshot } from './services/geminiService';
-import { stylePresets, StylePreset } from './constants';
+import { stylePresets } from './constants';
 import { fileToBase64 } from './utils/fileUtils';
-import { StyleSelector } from './components/StyleSelector';
 
 export interface GeneratedImage {
   prompt: string;
@@ -17,7 +16,6 @@ export interface GeneratedImage {
 
 const App: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [selectedPresetId, setSelectedPresetId] = useState<StylePreset['id'] | null>(null);
   const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -52,7 +50,6 @@ const App: React.FC = () => {
     setUploadedFile(file);
     setError(null);
     setGeneratedImages([]);
-    setSelectedPresetId(null);
   };
 
   const handleGenerateHeadshots = useCallback(async () => {
@@ -60,26 +57,32 @@ const App: React.FC = () => {
       setError("Please upload a photo first.");
       return;
     }
-    if (!selectedPresetId) {
-      setError("Please select a style preset.");
-      return;
-    }
      if (!navigator.onLine) {
         setError("You appear to be offline. Please check your internet connection.");
         return;
-    }
-
-    const selectedPreset = stylePresets.find(p => p.id === selectedPresetId);
-    if (!selectedPreset) {
-      setError("Invalid style preset selected.");
-      return;
     }
 
     setIsLoading(true);
     setError(null);
     setProgress(0);
     
-    const headshotPrompts = selectedPreset.prompts;
+    const shuffle = <T,>(array: T[]): T[] => {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    };
+    
+    const corporatePrompts = shuffle(stylePresets.find(p => p.id === 'corporate')?.prompts || []).slice(0, 4);
+    const modernPrompts = shuffle(stylePresets.find(p => p.id === 'modern')?.prompts || []).slice(0, 4);
+    const classicPrompts = shuffle(stylePresets.find(p => p.id === 'classic')?.prompts || []).slice(0, 3);
+    
+    const mixedPrompts = [...corporatePrompts, ...modernPrompts, ...classicPrompts];
+    const headshotPrompts = shuffle(mixedPrompts);
+
+
     const initialImages: GeneratedImage[] = headshotPrompts.map(prompt => ({
       prompt,
       image: null,
@@ -132,7 +135,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [uploadedFile, selectedPresetId]);
+  }, [uploadedFile]);
 
   const handleStartOver = () => {
     setUploadedFile(null);
@@ -140,7 +143,6 @@ const App: React.FC = () => {
     setIsLoading(false);
     setProgress(0);
     setError(null);
-    setSelectedPresetId(null);
   };
 
   return (
@@ -166,8 +168,8 @@ const App: React.FC = () => {
                 />
              </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-              <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center gap-8 md:gap-12">
+              <div className="flex flex-col items-center w-full max-w-sm">
                  <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-200">Step 1: Upload Your Photo</h3>
                 <UploadZone onFileSelect={handleFileSelect} uploadedFile={uploadedFile} disabled={isLoading} />
                 <p className="text-xs text-slate-400 dark:text-slate-500 mt-3 text-center">
@@ -177,19 +179,17 @@ const App: React.FC = () => {
                 </p>
               </div>
               
-              <div className="flex flex-col justify-start h-full space-y-6 pt-4 md:pt-0">
-                 <StyleSelector 
-                    selectedPresetId={selectedPresetId}
-                    onSelectPreset={(id) => setSelectedPresetId(id)}
-                    disabled={!uploadedFile || isLoading}
-                  />
-
-                <div className="flex flex-col space-y-3">
+              <div className="w-full max-w-sm flex flex-col items-center">
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200">Step 2: Generate</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 mb-4 text-center">
+                    We'll generate a fantastic mix of professional styles for you.
+                </p>
+                <div className="w-full flex flex-col space-y-3">
                   <button
                     onClick={handleGenerateHeadshots}
-                    disabled={!uploadedFile || !selectedPresetId || isLoading}
+                    disabled={!uploadedFile || isLoading}
                     className="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600 transition-all duration-300 flex items-center justify-center"
-                    aria-label="Generate headshots based on selected photo and style"
+                    aria-label="Generate a mix of headshots"
                   >
                      {isLoading ? 'Generating...' : 'Generate Headshots'}
                   </button>
