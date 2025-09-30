@@ -6,7 +6,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="text-center py-6">
       <div className="text-sm text-slate-500 dark:text-slate-400">
-        <span>Created by nedlsalah</span>
+        <span>Created by </span>
         <a 
           href="https://instagram.com/nedlsalah/" 
           target="_blank" 
